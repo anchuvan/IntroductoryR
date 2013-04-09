@@ -1,0 +1,628 @@
+---
+title       : A gentle introduction to R
+subtitle    : for Stata user
+author      : C.V. An
+job         : an avid R user
+framework   : io2012   # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : standalone # {standalone, draft}
+
+---
+
+## Table of contents
+
+1. What is R
+2. Programming with R
+3. Statistics with R
+4. Graphics with R
+
+--- .class #id 
+
+## 1. What is R
+
+>* A statistical package (competitors: Stata, SAS, SPSS, Matlab...)
+
+>* A programming language (object-oriented) 
+
+>* An environment (a huge system of algorithms, packages)
+
+>* A community (over 2 million users worldwide)
+
+>* A de-facto standard among statisticians for the development of statistical methods
+	and teaching
+
+---
+
+## Why R
+
+>* Free + Open source
+>* Flexible
+	  * Open for integration: 
+		  * Data: SAS, SPSS, Excel, STATA, SQL Server,...
+		  * Systems: applications, webservers,...
+	  * Able to combine with other programming languages (Python, C, C++,...)
+>* Well-supported community (stackoverflow, github, mailing list, r-blogs,...)
+>* Excellent graphics (the best among statistical packages)
+>* Highly extensible (over 4300 user-contributed packages)
+>* General purpose (statistical analysis, data visualization, machine learning,...)
+>* Reproducible research(R + LaTeX)
+
+---
+
+## Install R
+
+* Go to [http://r-project.org](http://www.r-project.org)
+* Select any mirror (Vietnam)
+* Choose your platform (Windows) and click <i>install R for the first time</i>
+* Download <b>R 3.0.0.0 for Windows</b>
+
+---
+
+## Get to know Rgui
+
+__Command line interface (CLI)__: R Console -> an interactive enviroment (workspace)
+```{r}
+1 + 1
+x <- "Hello Stata user"
+print(x)
+```
+
+__R script editor__ (similar to Stata do-file)
+
+---
+
+## Find help
+
+__Access help file__
+```{r,tidy=FALSE, eval=FALSE}
+?rnorm    ## returns documentation of 'rnorm'
+```
+__Search help files__
+```{r, eval=FALSE, echo=T}
+help.search("rnorm")  ## finding all functions having keyword: 'rnorm'
+## equivalent to: ??rnorm
+```
+__Get arguments__
+```{r, eval=FALSE, echo=TRUE}
+args("rnorm")  ## outputs all parameters used by rnorm
+````
+__Example__
+```{r, eval=F, echo=TRUE}
+example("mean") ## give some examples of how to use 'mean'
+```
+---
+
+## Set your working directory
+
+* All R files or datasets are recommended to store in a defined directory
+
+* Use command: `getwd()` to get your current working directory
+
+* Use command: `setwd()` to change your working directory
+
+* For exampple: `setwd("C:/user/antom/Documents/R")` 
+
+---
+
+## 2. Programming with R
+
+* 2.1 How R works
+* 2.2 Object-oriented programming
+* 2.3 Data type
+* 2.4 Data structure
+* 2.5 Getting data in
+
+---
+
+## 2.1 How R works
+
+>* R deploys packages to work on specific tasks. Each package comes with a wide
+   range of functions, methods, and datasets.
+
+>* CRAN TASK VIEWS classify all packages in different topics
+   [http://cran.r-project.org/web/views/](http://cran.r-project.org/web/views/)
+
+>* Default packages in R. 
+   * type: `sessionInfo()` to see loaded packages on workspace
+   * type: `installed.packages()` to see installed packages in your computer
+
+>* What's inside an package? 
+   * type: `help(package = datasets)` for full detail
+
+>* How to install packages?
+   * type: `install.packages("package_name")`, then select any mirror (usually, Vietnam)
+   * after that, `library(package_name)` makes it available for use
+
+---
+
+## 2.2 About object-oriented programming
+
+* Everything in R is an object
+
+* Each object belongs to a class (or an instance of the class, 
+   by which it inherits all chracteristics of the class)
+
+* Class has its own <b>functions</b> which manipualte objects
+   and <b>methods</b> that can be deployed by objects
+                
+* An example:
+```{r6, tidy=F, eval=F, echo=T}
+x <- 123; y <- 246 ## creat two objects x and y
+sum(x + y) ## function: sum() calculates the sum value of two objects x and y
+as.character(x) ## function: as.character() transform data type of object x
+#######
+y - x    ## method: substraction, - (y x)
+```
+---
+
+## 2.3 Basic data type in R
+
+* Integer: `1, 2, 5`
+* Numeric: `1.23`
+* Logical: `TRUE, FALSE (abbr: T, F)`
+* Complex: `1 + 3i`
+* Character (or string): `"character" (or 'character')`
+* Factors: `Yes or No`
+
+---
+
+## 2.4 Basic data structure in R
+
+* Vector
+* List 
+* Matrix
+* Array
+* Data.frame
+
+---
+
+## 2.4.1 Working with vector
+
+* Vector: the atomic data structure in R, all elements of vector
+  must be the same data type
+
+* Declaration
+
+* Common vector operations
+  * Arithemetic and logocal operations
+  * Vector indexing
+  * Generating vector with `:` and `seq()` and `rep()`
+
+* Vectorized operations
+
+---
+
+## Working with vector: declaration
+
+__Using c()__
+```{r, eval=FALSE}
+x <- c(1, 2, 3)
+y <- c("A", "b", "C", "d")
+z <- c(TRUE, FALSE, TRUE)
+g <- c(1 + 3i, 2 - 5i)
+```
+__Using vector()__
+```{r, eval=F, echo=TRUE, tidy=FALSE}
+y <- vector() ## return a vector with length = 0
+y <- vector(length = k) ## return a vector length = k
+```
+---
+
+## Working with vector: Arithemetic and logical operations
+```{r, tidy=F, eval=T, echo=TRUE}
+c(1, 2, 3) + c(2, 4, 6)
+c(2, 4, 6)/c(4, 6, 8)
+c(c(1,2,3), c(5, 6))  # 
+```
+---
+
+## Working with vector: indexing
+* Problem: want to extract individual/set of elements from a vector
+```{r7, tidy=FALSE, echo=TRUE, eval=FALSE}
+age <- c(22, 23, 24, 26, 36, 36, 36, 23)  ## create a vector
+age[1]  ## return the first element; age[k] return the k element
+#[1] 22
+age[1:3] ## return the three fist elements
+#[1] 22 23 24
+age[c=(1, 2, 3)] ## same output as age[1:3]
+#[1] 22 23 24
+age[-3]  ## return all elements except for the third element
+#[1] 22 23 26 36 36 36 23
+age[3, -2] ## Error, can't index both positive and negative value
+```
+---
+
+## Working with vector: vectorization
+```{r8, tidy=F, echo=T, eval=T}
+x <- c(12, 34, 54); y <- c(28, 98, 56)
+x + y
+x/y
+x * 3
+```
+---
+
+## Working with vector: generating vector
+```{r, tidy=F, eval=T, echo=T}
+1:5   # seq(1:5) 
+seq(1,5, by=2) # seq(from= , to= , by= )
+rep(1:3, times=4) ## rep(x= , times=, each= )
+```
+---
+
+## 2.4.2 Working with list
+
+* Basically, list is a nested vector.
+* Example: `my.list <- list(a=c(1:10), b=c("this", "is", "it"))`
+```{r}
+my.list <- list(a=c(1:10), b=c("this", "is", "it"))
+my.list ## this list contains 2 elements, each elements is a vector
+```
+---
+
+## Working with list: indexing
+```{r9, tidy=F, echo=T, eval=T}
+my.list <- list(a=c(1:10), b=c("this", "is", "it"))
+my.list[[1]]  ## indexing by number
+names(my.list)
+my.list["a"]  ## indexing by name
+```
+---
+
+## 2.4.3 Working with data frame
+
+* Data frame is a 2x2 matrix, but it can handle different type of data
+
+* Data frame is a rectangular table with columns represent 
+  variables and rows represent obsevation
+
+* How to create a data frame: ` df <- data.frame(c1, c2)` 
+  with c1 and c2 are vectors
+
+---
+
+## 2.5 Getting data in
+
+* Reading data directly from CLI by `scan()`
+
+* Using `library(foreign)`
+* Make sure your data file in your current working directory
+  * `getwd()` returns your current working directory
+  * `setwd` setting your working directory, e.g: `setwd("C:/user/R")`
+* Basic syntax:
+  * data <- read.dta("filename.dta",...)
+  * data <- read.spss("filename.sav",...)
+  * data <- read.csv("filenam.csv",...)
+  * data <- read.table("filename.txt",...)
+  
+* `?read.table` for more instructions  
+
+---
+
+## 3. Statistics with R
+
+* 3.1 Desciptive statistics
+
+* 3.2 Inferential statistics
+
+---
+
+## 3.1 Descriptive statistics
+
+__Data set__
+```{r, tidy=FALSE}
+set.seed(10) ## ensure the sample can be reproducible
+x <- sample(x = 1:100, size = 20, replace = TRUE) ## choose a random sample from vector x
+print(x)  
+```
+---
+
+## 3.1 Desciptive statistics
+
+__Descriptive statistics__
+```{r, results='hide', tidy=F}
+min(x) ## [1] 7
+max(x) ## [1] 100
+mean(x) ## [1] 56
+median(x) ## [1] 60.5
+range(x) ## 
+summary(x) ## similiar to summarize in Stata
+```
+---
+
+## 3.2 Inferential statistics (regression model)
+
+__Reading in data__
+```{r}
+data(cars)
+str(cars)
+```
+---
+
+## 3.2 Infrential statistics (regression model)
+
+__Linear regression model:__
+* R use function lm() to analyze regression model, all the results can be stored in an object,
+  and this object (regress) is a <b>list</b>
+```{r, eval=F, echo=T}
+regress <- lm(dist ~ speed, data=cars)
+summary(regress) ## to print out all results
+```
+
+---
+
+## 3.2 Infrential statistics (regression model)
+
+__Linear regression model:__
+```{r, eval=T, echo=F}
+regress <- lm(dist ~ speed, data=cars)
+summary(regress)
+```
+---
+
+## 3.2 Infrential statistics (regression model)
+__regress is a object__
+```{r, eval=T, echo=T}
+regress <- lm(dist ~ speed, data=cars)
+names(regress)
+```
+---
+
+## 3.2 Infrential statistics (regression model)
+```{r}
+regress$residuals
+```
+---
+
+## 3.2 Infrential statistics (regression model)
+```{r}
+boxplot(regress$residuals)
+```
+---
+
+## 3. Graphics with R
+
+* R provides the usual range of standard statistical plots, including scatterplots,
+boxplots, histograms, barplots, piecharts, and basic 3D plots
+
+* Basically, these plots can be produced by a single function call. (high-level functions)
+
+* R is also able to add several graphical elements together. (text, lines, points, axis,...)
+
+---
+
+## First example of R graphics
+```{r, tidy=F, fig.align='center', eval=TRUE, echo=TRUE}
+plot(pressure)  # high-level funtion
+text(150, 600, "Hello Stata Users!") # adding graphical element: text
+```
+
+## High-level functions:
+
+* Scatter plot: `plot()`, can be used for dot plot and line chart
+ 
+* Box and whisker plot: `boxplot()`
+
+* Histogram: `hist()`
+
+* Bar chart: `barplot()`
+
+---
+
+## High-level functions:
+__ An example__
+```{r, echo=T, eval=F, tidy=FALSE}
+par(mfrow=c(2, 2)) ## create 4 panels
+N <- 200
+x <- runif(N, -4, 4)
+y <- sin(x) + 0.5*rnorm(N)
+plot(x, y, main="Scatter plot of y and x")
+hist(x, main="Histogram of x")
+boxplot(y, main="Box plot of y")
+barplot(x, main="Bar chart of x")
+```
+---
+
+## High-level functions
+```{r, echo=F, eval=T, tidy=FALSE}
+par(mfrow=c(2, 2)) ## create 4 panels
+N <- 200
+x <- runif(N, -4, 4)
+y <- sin(x) + 0.5*rnorm(N)
+plot(x, y, main="Scatter plot of y and x")
+hist(x, main="Histogram of x")
+boxplot(y, main="Box plot of y")
+barplot(x, main="Bar chart of x")
+```
+---
+
+## Scatter plot:
+* Main parameters: `x=, y=, xlab=, ylab=, pch=, main=, type=, col=`
+
+```{r, eval=T, echo=T, tidy=FALSE, fig.height=6, fig.width=6}
+plot(x = cars$speed, y = cars$dist) 
+```
+---
+
+## Scatter plot:
+* R control characteristics of graphs via parameters: x, y, xlab, ylab,....
+
+```{r, eval=F, echo=T, fig.align='center', tidy=FALSE}
+plot(x=cars$speed, y=cars$dist,
+       xlab = "Speed (miles per hour)", # rename x label
+       ylab = "Stopping distance", # rename y label
+       main = "Scatter plot",  # title of the plot
+       cex.main = 1.6, ## Resize the title text
+       tck = -0.015, ## Resize the tick mark
+       pch = 16, col = "purple", ## choose another point character and set color
+       las = 1, bty = "l",  # change the frame from "o" to "l"
+	      col.lab = "red4", cex.lab = 1.3, # change color and size of label
+	      col.axis = "black",  # change color of 
+	      col.main = "red4") # change color of title
+```
+---
+
+## Scatter plot:
+
+```{r, eval=T, echo=F, fig.align='center', tidy=FALSE}
+plot(x=cars$speed, y=cars$dist,
+       xlab = "Speed (miles per hour)",
+       ylab = "Stopping distance",
+       main = "Scatter plot",
+       cex.main = 1.6, ## Resize the title text
+       tck = -0.015, ## Resize the tick mark
+       pch = 16, col = "purple", ## choose another point character and set color
+       las = 1, bty = "l",
+        col.lab = "red4", cex.lab = 1.3,
+	      col.axis = "black",
+	      col.main = "red4")
+```
+---
+
+## Scatter plot:
+
+```{r, tidy=F, echo=T, fig.height=5, fig.width=9}
+par(mfrow=c(1, 2))
+plot(x=cars$speed, y=cars$dist)
+plot(x=cars$speed, y=cars$dist, pch=16, col="purple", bty="l", las=1,
+     xlab="Speed (mph)", ylab="Stopping distance", main="Scatter plot")
+```
+---
+
+## Line chart
+__Argument: type="l"__
+```{r, tidy=F, echo=T, fig.height=5, fig.width=9}
+par(mfrow=c(1, 2)); library(ggplot2)
+plot(pressure$temperature, pressure$pressure, type="l")
+plot(pressure$temperature, pressure$pressure, type="b")
+```
+---
+
+## line charts
+```{r, tidy=FALSE, echo=FALSE}
+par(mfrow=c(2,2))
+plot(y, type="l"); title("lines")
+plot(y, type="b"); title("both")
+plot(y, type="o"); title("overstruc")
+plot(y, type="h"); title("high density")
+```
+---
+
+## Line graph: 
+
+```{r, eval=T, echo=F}
+rain <- read.csv("C:/Users/antom/Documents/R/datasetc1/cityrain.csv", 
+			header=TRUE)
+plot(rain$Tokyo, type="l", col="red",
+     ylim=c(0,250),
+     main="Monthly rainfall in major cities",
+     xlab="Month of Year",
+     ylab="Rainfall (mm)",
+     lwd=2,
+     cex.main=1.3,
+     las = 1, bty = "l",
+     tck = -0.012)
+
+lines(rain$NewYork,type="l",col="blue",lwd=2)
+lines(rain$London,type="l",col="green",lwd=2)
+lines(rain$Berlin,type="l",col="orange",lwd=2)
+
+legend("top",
+	 legend=c("Tokyo","NewYork","London","Berlin"),
+	 ncol=4, ## number of legend columns (default is 1)
+	 cex=0.8, ## size of legend
+	 bty="n", ## type of border
+	 col=c("red","blue","green","orange"),
+	 lty=1,lwd=2)
+```
+---
+
+## Box and whisker plot:
+```{r, echo=T, tidy=F, eval=T, fig.align="centre"}
+boxplot(len ~ supp + dose, data=ToothGrowth)
+```
+
+---
+
+## Histogram:
+```{r, tidy=F, echo=T, eval=T, fig.width=9, fig.height=5}
+par(mfrow=c(1,2))
+hist(mtcars$mpg)
+hist(mtcars$mpg, breaks=10, col="steelblue")
+```
+---
+
+## Bar chart:
+```{r, echo=T, eval=T, tidy=F, fig.align='center'}
+barplot(table(mtcars$cyl))
+```
+---
+
+## Bar chart:
+```{r, eval = T, echo =F, tidy=F}
+citysales <- read.csv("C:/Users/antom/Documents/R/datasetc1/citysales.csv", header=T)
+barplot(as.matrix(citysales[, 2:4]),
+	  beside = T,
+	  legend = citysales$City,
+	  col = rainbow(5), # other color palette heat.colors()
+	  border = "white",
+	  ylab = "Revenue", cex.lab = 1.3,
+	  las = 1)
+```
+---
+
+## Miscellaneous graphs
+
+* Correlation matrix
+
+* Network graph
+
+* Dynamic graph
+
+---
+
+## Correlation matrix plot
+```{r, fig.align='center', echo=FALSE}
+library(corrplot)
+corrplot(cor(mtcars))
+```
+---
+
+## Network graph
+```{r, eval=T, echo=F, tidy=FALSE, fig.align='center'}
+library(igraph)
+library(gcookbook)
+g <- graph.data.frame(madmen2, directed=T)
+par(mar=c(0, 0 , 0, 0))
+plot(g, layout=layout.fruchterman.reingold, vertex.size=9, edge.arrow.size=0.5,
+     vertex.label=NA)
+```
+---
+
+## Dynamic graphics
+```{r, echo=F, results="asis", message=F}
+library(googleVis)
+m1 <- gvisMotionChart(Fruits, idvar="Fruit", timevar="Year")
+print(m1, tag="chart")
+```
+---
+
+## Conclusions
+
+* R operates on data structure (and the fundamental type is vector)
+
+* R manipulates data by functions, and R controls functions through
+  parameters (both statistical functions and graphics function apply to the same principle)
+  
+---
+
+
+
+
+
+
+
+
+
+
